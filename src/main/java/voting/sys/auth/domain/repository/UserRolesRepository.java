@@ -7,6 +7,6 @@ import voting.sys.auth.domain.entity.UserRoles;
 @Repository
 public interface UserRolesRepository extends JpaRepository<UserRoles, Long> {
 
-    UserRoles getDMUserRolesByName(String name);
+    UserRoles getUserRolesByName(String name);
 
 }
