@@ -40,6 +40,8 @@ public class SecurityConfig {
                         requests -> requests
                                 .requestMatchers("/authenticate")
                                 .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(
                         session -> session
