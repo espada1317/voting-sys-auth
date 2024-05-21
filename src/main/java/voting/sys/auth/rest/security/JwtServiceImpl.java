@@ -46,9 +46,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(String userName) {
+    public String generateToken(String userName, String roles) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userName);
+        return createToken(claims, userName, roles);
     }
 
     private Claims extractAllClaims(String token) {
@@ -64,10 +64,11 @@ public class JwtServiceImpl implements JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private String createToken(Map<String, Object> claims, String userName) {
+    private String createToken(Map<String, Object> claims, String userName, String roles) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userName)
+                .setIssuer(roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
