@@ -39,11 +39,6 @@ jobs:
           version: latest
           install_components: 'gke-gcloud-auth-plugin'
 
-      - name: Automatic Tagging of Releases
-        id: increment-git-tag
-        run: |
-          bash ./scripts/git_update.sh -v patch
-
       - name: Build and Push the Docker Image to Artifact Repository
         run: |
           gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
