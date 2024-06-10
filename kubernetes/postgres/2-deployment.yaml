@@ -1,0 +1,84 @@
+---
+# Define a Service to expose database to other service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: monitoring
+  labels:
+    app: voting-sys-auth-postgres
+    tier: database
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: voting-sys-auth-postgres
+    tier: database
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+  namespace: monitoring
+  labels:
+    app: postgres
+    tier: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-sys-auth-postgres
+  namespace: monitoring
+  labels:
+    app: postgres
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+        tier: database
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres_password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: name
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              subPath: postgres-data  # Specify a subdirectory
+              name: postgres-persistance-storage
+      volumes:
+        - name: postgres-persistance-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
