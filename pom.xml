@@ -12,7 +12,7 @@
 
     <groupId>voting.sys</groupId>
     <artifactId>auth</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>auth</name>
     <description>Authentication module for voting system</description>
 
