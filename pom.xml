@@ -32,7 +32,7 @@
 
         <flyway.user>${env.PGSQL_USERNAME}</flyway.user>
         <flyway.password>${env.PGSQL_PASSWORD}</flyway.password>
-        <flyway.url>${env.PGSQL_URL}/${env.PGSQL_DATABASE}</flyway.url>
+        <flyway.url>jdbc:postgresql://${PGSQL_URL}:5432/voting-sys-auth-db</flyway.url>
     </properties>
 
     <dependencies>
