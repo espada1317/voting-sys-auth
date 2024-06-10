@@ -30,11 +30,6 @@ spec:
                 configMapKeyRef:
                   name: postgres-configmap
                   key: host
-            - name: PGSQL_DATABASE
-              valueFrom:
-               configMapKeyRef:
-                 name: postgres-configmap
-                 key: name
             - name: PGSQL_USERNAME
               valueFrom:
                 secretKeyRef:
