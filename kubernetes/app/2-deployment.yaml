@@ -35,12 +35,12 @@ spec:
                configMapKeyRef:
                  name: postgres-configmap
                  key: name
-            - name: POSTGRES_USER
+            - name: PGSQL_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: postgres_user
                   name: postgres-credentials
-            - name: POSTGRES_PASSWORD
+            - name: PGSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
