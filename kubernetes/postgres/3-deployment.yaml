@@ -56,21 +56,26 @@ spec:
           image: postgres
           imagePullPolicy: "IfNotPresent"
           env:
+            - name: PGSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: host
+            - name: PGSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: name
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
                   key: postgres_user
+                  name: postgres-credentials
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: postgres_password
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-configmap
-                  key: name
           ports:
             - containerPort: 5432
               name: postgres

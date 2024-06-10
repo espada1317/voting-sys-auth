@@ -18,7 +18,7 @@ spec:
     spec:
       serviceAccountName: voting-sys
       containers:
-        - name: cloud-app
+        - name: voting-sys-auth
           image: gar-location-docker.pkg.dev/project-id/repository/image-name:image-version
           ports:
             - name: web
@@ -34,7 +34,7 @@ spec:
               valueFrom:
                configMapKeyRef:
                  name: postgres-configmap
-                 key: db
+                 key: name
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
