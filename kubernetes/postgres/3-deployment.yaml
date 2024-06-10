@@ -3,16 +3,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service
+  name: postgres
   namespace: monitoring
   labels:
-    app: voting-sys-auth-postgres
+    app: postgres
     tier: database
 spec:
   ports:
     - port: 5432
   selector:
-    app: voting-sys-auth-postgres
+    app: postgres
     tier: database
 ---
 apiVersion: v1
@@ -34,7 +34,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: voting-sys-auth-postgres
+  name: postgres
   namespace: monitoring
   labels:
     app: postgres
