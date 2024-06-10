@@ -45,14 +45,10 @@ jobs:
           bash ./scripts/git_update.sh -v patch
 
       - name: Build and Push the Docker Image to Artifact Repository
-        env:
-          GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
         run: |
           gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
           docker build -t $GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest .
-          docker build -t $GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GIT_TAG .
           docker push $GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest
-          docker push $GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GIT_TAG
 
       - name: Deploy Cluster to GKE
         env:
@@ -64,7 +60,6 @@ jobs:
           sed -i "s/project-id/$PROJECT_ID/g" kubernetes/app/2-deployment.yaml
           sed -i "s/repository/$REPOSITORY/g" kubernetes/app/2-deployment.yaml
           sed -i "s/image-name/$IMAGE/g" kubernetes/app/2-deployment.yaml
-          sed -i "s/image-version/$GIT_TAG/g" kubernetes/app/2-deployment.yaml
               
           kubectl apply -f kubernetes/postgres
           kubectl apply -f kubernetes/app

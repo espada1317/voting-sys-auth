@@ -19,7 +19,7 @@ spec:
       serviceAccountName: voting-sys
       containers:
         - name: voting-sys-auth
-          image: gar-location-docker.pkg.dev/project-id/repository/image-name:image-version
+          image: gar-location-docker.pkg.dev/project-id/repository/image-name:latest
           ports:
             - name: web
               containerPort: 8080
