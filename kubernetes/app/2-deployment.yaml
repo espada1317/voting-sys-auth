@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-sys-auth-deployment
+  namespace: monitoring
+  labels:
+    app: voting-sys-auth
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: voting-sys-auth
+  template:
+    metadata:
+      labels:
+        app: voting-sys-auth
+    spec:
+      serviceAccountName: voting-sys
+      containers:
+        - name: cloud-app
+          image: gar-location-docker.pkg.dev/project-id/repository/image-name:image-version
+          ports:
+            - name: web
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PGSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: host
+            - name: PGSQL_DATABASE
+              valueFrom:
+               configMapKeyRef:
+                 name: postgres-configmap
+                 key: db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_user
+                  name: postgres-credentials
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres_password
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            periodSeconds: 10
+            initialDelaySeconds: 5
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
