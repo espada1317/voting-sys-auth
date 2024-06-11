@@ -28,17 +28,17 @@ spec:
             - name: PGSQL_URL
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-configmap
+                  name: postgres-configmap-auth
                   key: host
             - name: PGSQL_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: postgres_user
-                  name: postgres-credentials
+                  name: postgres-credentials-auth
             - name: PGSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
+                  name: postgres-credentials-auth
                   key: postgres_password
           livenessProbe:
             failureThreshold: 10
