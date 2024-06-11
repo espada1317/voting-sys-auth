@@ -73,7 +73,7 @@ spec:
                   key: name
           ports:
             - containerPort: 5432
-              name: postgres
+              name: postgres-auth
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               subPath: postgres-data  # Specify a subdirectory
