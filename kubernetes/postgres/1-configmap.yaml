@@ -4,5 +4,5 @@ metadata:
   name: postgres-configmap-auth
   namespace: monitoring
 data:
-  host: "postgres"
+  host: "postgres-auth"
   name: "voting-sys-auth-db"
